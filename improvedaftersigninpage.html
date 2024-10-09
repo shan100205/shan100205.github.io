@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #00b14a;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .inputBox {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .inputBox label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .inputBox input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #continuePrompt {
+            margin-top: 20px;
+        }
+
+        #timer {
+            margin-top: 20px;
+            color: blue;
+            font-size: 16px;
+        }
+
+        #timerUpMessage {
+            margin-top: 20px;
+            color: red;
+            font-size: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="welcome-message">Welcome!</h2>
+        <div class="inputBox">
+            <label for="studentNumber">Enter Your Student Number:</label>
+            <input type="text" id="studentNumber" maxlength="7">
+        </div>
+        <div id="continuePrompt" class="hidden">
+            <p>Do you want to continue?</p>
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+
+        <div id="timer" class="hidden">
+            <p>Time remaining: <span id="time">5</span> seconds</p>
+        </div>
+        <div id="timerUpMessage" class="hidden">
+            <p>Timer's Up!</p>
+        </div>
+    </div>
+
+    <script>
+        const registeredStudents = new Set();
+
+        document.getElementById('studentNumber').addEventListener('input', function() {
+            const studentNumber = document.getElementById('studentNumber').value.trim();
+
+            if (studentNumber.length === 7 && !registeredStudents.has(studentNumber)) {
+                registeredStudents.add(studentNumber);  
+                document.getElementById('welcome-message').textContent = `Welcome, Student ${studentNumber}!`;
+                document.getElementById('continuePrompt').classList.remove('hidden'); 
+            }
+        });
+
+        function startTimer() {
+            let timeRemaining = 5;  
+            const timerElement = document.getElementById('time');
+            const timerDisplay = document.getElementById('timer');
+            const timerUpMessage = document.getElementById('timerUpMessage');
+            timerDisplay.classList.remove('hidden');
+            timerUpMessage.classList.add('hidden');
+
+            const timer = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = timeRemaining;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    timerDisplay.classList.add('hidden');
+                    timerUpMessage.classList.remove('hidden');
+                    window.location.href = 'improvedmainpage.html';  
+                }
+            }, 1000);
+        }
+
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            startTimer(); 
+        });
+
+        document.getElementById('noBtn').addEventListener('click', function() {
+            alert('Thank you! See you next time.');
+        });
+    </script>
+</body>
+</html>
